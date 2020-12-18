@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../components/navigation-bar_component.dart';
+import 'components/navigation-bar_component.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -8,8 +8,8 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Currently on home page file"),
       ),
-      body: Text("YO"),
-      bottomNavigationBar: BottomNavBar(),
+      body: Text("dOasdf"),
+      bottomNavigationBar: BottomNavBar(0),
     );
   }
 }
