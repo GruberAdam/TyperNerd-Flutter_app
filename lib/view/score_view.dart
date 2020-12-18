@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'components/navigation-bar_component.dart';
 
+const SCORE_NAVBAR_INDEX = 2;
+
 class ScorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -9,7 +11,7 @@ class ScorePage extends StatelessWidget {
         title: Text("Currently on score page file"),
       ),
       body: Text("Currently in the score file"),
-      bottomNavigationBar: BottomNavBar(2),
+      bottomNavigationBar: BottomNavBar(SCORE_NAVBAR_INDEX),
     );
   }
 }

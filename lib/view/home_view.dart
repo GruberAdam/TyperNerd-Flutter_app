@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'components/navigation-bar_component.dart';
 
+const HOME_NAVBAR_INDEX = 0;
+
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -9,7 +11,7 @@ class HomePage extends StatelessWidget {
         title: Text("Currently on home page file"),
       ),
       body: Text("dOasdf"),
-      bottomNavigationBar: BottomNavBar(0),
+      bottomNavigationBar: BottomNavBar(HOME_NAVBAR_INDEX),
     );
   }
 }
