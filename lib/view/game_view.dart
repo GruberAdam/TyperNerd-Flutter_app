@@ -8,7 +8,7 @@ class GamePage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Currently on game page file"),
       ),
-      bottomNavigationBar: BottomNavBar(),
+      bottomNavigationBar: BottomNavBar(1),
     );
   }
 }

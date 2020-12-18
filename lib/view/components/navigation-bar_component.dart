@@ -4,12 +4,15 @@ import '../score_view.dart';
 import '../home_view.dart';
 
 class BottomNavBar extends StatefulWidget {
+  final selectedIndex;
+  BottomNavBar(this.selectedIndex);
+
   @override
-  _BottomNavBarState createState() => _BottomNavBarState();
+  _BottomNavBarState createState() => _BottomNavBarState(selectedIndex);
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  int selectedIndex = 0;
+  int selectedIndex;
 
   static const List<BottomNavigationBarItem> navBarItems = [
     BottomNavigationBarItem(
@@ -26,32 +29,38 @@ class _BottomNavBarState extends State<BottomNavBar> {
     ),
   ];
 
+  _BottomNavBarState(int index) {
+    this.selectedIndex = index;
+  }
+
   void onItemTaped(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
+    if (selectedIndex != index) {
+      setState(() {
+        selectedIndex = index;
+      });
 
-    String indexLabel = navBarItems[index].label;
+      String indexLabel = navBarItems[index].label;
 
-    switch (indexLabel) {
-      case "Home":
-        {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => HomePage()));
-          break;
-        }
-      case "Game":
-        {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => GamePage()));
-          break;
-        }
-      case "Score":
-        {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ScorePage()));
-          break;
-        }
+      switch (indexLabel) {
+        case "Home":
+          {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => HomePage()));
+            break;
+          }
+        case "Game":
+          {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => GamePage()));
+            break;
+          }
+        case "Score":
+          {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => ScorePage()));
+            break;
+          }
+      }
     }
   }
 
