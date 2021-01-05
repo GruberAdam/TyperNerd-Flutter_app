@@ -8,7 +8,44 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Currently on home page file"),
       ),
-      body: Text("YO"),
+      body: Container(
+        child: Column(
+          children: [
+            Container(
+              child: Text(
+                "Title",
+                style: TextStyle(fontSize: 25),
+              ),
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              color: Colors.red,
+            ),
+            Container(
+              child: Text(
+                "Content",
+                style: TextStyle(fontSize: 25),
+              ),
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width,
+              height: 250,
+              margin: EdgeInsets.only(top: 45),
+              color: Colors.yellow,
+            ),
+            Container(
+              child: Text(
+                "Footer content",
+                style: TextStyle(fontSize: 25),
+              ),
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              margin: EdgeInsets.only(top: 45),
+              color: Colors.blue,
+            )
+          ],
+        ),
+      ),
       bottomNavigationBar: BottomNavBar(),
     );
   }
