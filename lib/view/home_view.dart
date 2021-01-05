@@ -10,7 +10,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Currently on home page file"),
       ),
-      body: Text("dOasdf"),
+      body: Text("Currently in the home file"),
       bottomNavigationBar: BottomNavBar(HOME_NAVBAR_INDEX),
     );
   }
