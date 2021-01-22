@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'components/navigation-bar_component.dart';
+import 'package:horizontal_data_table/horizontal_data_table.dart';
 
 const SCORE_NAVBAR_INDEX = 2;
 
@@ -61,27 +62,21 @@ class ScorePage extends StatelessWidget {
                     height: 250,
                   ),
                   Container(
-                    child: ListView.builder(
-                        itemCount: 2,
-                        itemBuilder: (BuildContext context, int index) {
-                          if (index == 0) {
-                            return Text(
-                              "Historique",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w700),
-                            );
-                          }
-                          return InkWell(
-                            child: ListTile(
-                                title: Row(
-                              children: <Widget>[
-                                Expanded(child: Text("ID : <0>")),
-                                Expanded(child: Text("WPM : <156>")),
-                                Expanded(child: Text("Date :<30.04.02>")),
-                              ],
-                            )),
-                          );
-                        }),
+                    child: HorizontalDataTable(
+                      leftHandSideColumnWidth: 100,
+                      rightHandSideColumnWidth: 600,
+                      isFixedHeader: true,
+                      leftSideChildren: [],
+                      rightSideChildren: [],
+                      leftSideItemBuilder: _generateFirstColumnRow,
+                      headerWidgets: [Text("ID"), Text("WPM"), Text("Date")],
+                      itemCount: 3,
+                      rowSeparatorWidget: const Divider(
+                        color: Colors.black54,
+                        height: 1.0,
+                        thickness: 0.0,
+                      ),
+                    ),
                     color: Colors.purple,
                     width: MediaQuery.of(context).size.width,
                     height: 100,
@@ -95,11 +90,21 @@ class ScorePage extends StatelessWidget {
               height: 400,
               margin: EdgeInsets.only(top: 45),
               color: Colors.yellow,
-            )
+            ),
           ],
         ),
       ),
       bottomNavigationBar: BottomNavBar(SCORE_NAVBAR_INDEX),
+    );
+  }
+
+  Widget _generateFirstColumnRow(BuildContext context, int index) {
+    return Container(
+      child: Text('$index'),
+      width: 100,
+      height: 52,
+      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+      alignment: Alignment.centerLeft,
     );
   }
 }
