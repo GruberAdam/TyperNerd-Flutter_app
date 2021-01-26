@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/view/game_view.dart';
+import '../game_view.dart';
 import '../score_view.dart';
 import '../home_view.dart';
 
