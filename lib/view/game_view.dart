@@ -66,7 +66,6 @@ class GamePage extends StatelessWidget {
           ],
         ),
       ),
-      body: Text("Currently in the game file"),
       bottomNavigationBar: BottomNavBar(GAME_NAVBAR_INDEX),
     );
   }
