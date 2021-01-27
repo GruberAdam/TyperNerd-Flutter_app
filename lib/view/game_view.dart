@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'components/navigation-bar_component.dart';
 
 const GAME_NAVBAR_INDEX = 1;
@@ -9,16 +11,48 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePage extends State<GamePage> {
-  final myController = TextEditingController();
+  final inputController = TextEditingController();
+  final displayController = TextEditingController();
+  List<String> allEnglishWords = [];
+  List<String> englishWordsUsed = [];
+  int wordsWritten = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    displayWords();
+  }
+
+  void getEnglishWords() async {
+    final String response =
+        await rootBundle.loadString('assets/english_words.json');
+    var data = await json.decode(response);
+
+    for (var i = 0; i < data["commonWords"].length; i++) {
+      allEnglishWords.add(data["commonWords"][i]);
+    }
+  }
+
+  void displayWords() async {
+    await getEnglishWords();
+    for (var i = 0; i < 100; i++) {
+      displayController.text += allEnglishWords[i] + " ";
+      englishWordsUsed.add(allEnglishWords[i]);
+    }
+  }
 
   void onChangedText(String text) {
-    if (text == " ") {
-      myController.text = "Its a space motherfucker it was (" + text + ")";
-      myController.clear();
-    } else {
-      myController.text = "RIP it was (" + text + ")";
-      myController.clear();
-    }
+    if (text.substring(text.length - 1) == " ") {
+      print(text.substring(0, text.length - 1));
+      if (text.substring(0, text.length - 1) ==
+          englishWordsUsed[wordsWritten]) {
+        print("Word is right");
+      } else {
+        print("Word is false");
+      }
+      wordsWritten++;
+      inputController.clear();
+    } else {}
   }
 
   @override
@@ -54,12 +88,11 @@ class _GamePage extends State<GamePage> {
             ),
             Container(
               child: TextFormField(
+                controller: displayController,
                 minLines: 2,
                 maxLines: 2,
-                initialValue:
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pellentesque consectetur urna, nec sodales arcu. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent lacus diam, accumsan sed urna id, imperdiet pulvinar sapien. Aliquam at nibh sed purus viverra pretium eu eget dolor. Cras id lectus eu velit mattis feugiat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec vehicula sit amet enim in vehicula. Fusce iaculis accumsan nisi nec fringilla. Duis iaculis elit sit amet nibh finibus euismod. Vestibulum eu ornare felis. Morbi consequat commodo erat vel tempor. Mauris auctor pellentesque massa, non fermentum tortor cursus eu. Donec quis dolor ut lacus viverra semper. Etiam ut consectetur dui, id mattis sem. Duis nec magna a ipsum maximus aliquet vitae ut ex. ",
                 readOnly: true,
-                style: TextStyle(color: Colors.grey[500], fontSize: 20),
+                style: TextStyle(color: Colors.white, fontSize: 20),
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.white)),
@@ -71,7 +104,7 @@ class _GamePage extends State<GamePage> {
             ),
             Container(
               child: TextField(
-                controller: myController,
+                controller: inputController,
                 onChanged: (String value) {
                   onChangedText(value);
                 },
@@ -81,6 +114,7 @@ class _GamePage extends State<GamePage> {
                   focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.white)),
                 ),
+                style: TextStyle(color: Colors.white, fontSize: 20),
               ),
               margin: EdgeInsets.only(top: 30, left: 15, right: 15),
             ),
