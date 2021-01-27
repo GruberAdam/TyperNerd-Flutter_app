@@ -3,7 +3,24 @@ import 'components/navigation-bar_component.dart';
 
 const GAME_NAVBAR_INDEX = 1;
 
-class GamePage extends StatelessWidget {
+class GamePage extends StatefulWidget {
+  @override
+  _GamePage createState() => _GamePage();
+}
+
+class _GamePage extends State<GamePage> {
+  final myController = TextEditingController();
+
+  void onChangedText(String text) {
+    if (text == " ") {
+      myController.text = "Its a space motherfucker it was (" + text + ")";
+      myController.clear();
+    } else {
+      myController.text = "RIP it was (" + text + ")";
+      myController.clear();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,6 +71,10 @@ class GamePage extends StatelessWidget {
             ),
             Container(
               child: TextField(
+                controller: myController,
+                onChanged: (String value) {
+                  onChangedText(value);
+                },
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.white)),
@@ -66,7 +87,7 @@ class GamePage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavBar(1),
+      bottomNavigationBar: BottomNavBar(GAME_NAVBAR_INDEX),
     );
   }
 }
