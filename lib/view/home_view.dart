@@ -1,9 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'game_view.dart';
 import 'components/navigation-bar_component.dart';
 
 const HOME_NAVBAR_INDEX = 0;
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePage createState() => _HomePage();
+}
+
+class _HomePage extends State<HomePage> {
+  void navigateToGamePage() {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => GamePage()));
+  }
+
+  void exitApp() {
+    SystemNavigator.pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,11 +52,25 @@ class HomePage extends StatelessWidget {
               margin: EdgeInsets.only(top: 45, left: 35, right: 35),
             ),
             Container(
-              alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width,
-              height: 200,
-              margin: EdgeInsets.only(top: 45, left: 35, right: 35),
-              color: Colors.white,
+                child: ButtonTheme(
+                    height: 75,
+                    minWidth: 300,
+                    child: RaisedButton(
+                      onPressed: navigateToGamePage,
+                      child: Text('Play',
+                          style: TextStyle(fontSize: 20, color: Colors.white)),
+                    ))),
+            Container(
+              child: ButtonTheme(
+                  buttonColor: Colors.red,
+                  height: 75,
+                  minWidth: 300,
+                  child: RaisedButton(
+                    onPressed: exitApp,
+                    child: Text('Exit',
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                  )),
+              margin: EdgeInsets.only(top: 30),
             ),
           ],
         ),

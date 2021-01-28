@@ -22,7 +22,7 @@ environment:
 
 dependencies:
   english_words: ^3.1.5
-  pluto_grid: ^1.1.0
+  rich_text_controller: ^1.2.0
   flutter:
     sdk: flutter
 

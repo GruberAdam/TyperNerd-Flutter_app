@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'components/navigation-bar_component.dart';
+import 'package:rich_text_controller/rich_text_controller.dart';
+import 'dart:async';
 
 const GAME_NAVBAR_INDEX = 1;
 
@@ -12,15 +14,30 @@ class GamePage extends StatefulWidget {
 
 class _GamePage extends State<GamePage> {
   final inputController = TextEditingController();
-  final displayController = TextEditingController();
+  RichTextController displayController;
+
   List<String> allEnglishWords = [];
   List<String> englishWordsUsed = [];
   int wordsWritten = 0;
+  int rightWords = 0;
+  int falseWords = 0;
+
+  bool inputIsClickable = true;
+
+  bool isPlaying = false;
+  Timer timer;
+  int timerStart = 30;
+
+  int WPM = 0;
 
   @override
   void initState() {
-    super.initState();
     displayWords();
+    displayController = RichTextController(stringMap: {
+      "String1": TextStyle(color: Colors.red),
+    }, onMatch: (List<String> matches) {});
+
+    super.initState();
   }
 
   void getEnglishWords() async {
@@ -33,6 +50,25 @@ class _GamePage extends State<GamePage> {
     }
   }
 
+  void resetGame() {
+    setState(() {
+      timer.cancel();
+      inputController.clear();
+      displayController.clear();
+      englishWordsUsed = [];
+      allEnglishWords = [];
+      wordsWritten = 0;
+      rightWords = 0;
+      falseWords = 0;
+      inputIsClickable = true;
+      isPlaying = false;
+      WPM = 0;
+      timerStart = 30;
+    });
+
+    displayWords();
+  }
+
   void displayWords() async {
     await getEnglishWords();
     for (var i = 0; i < 100; i++) {
@@ -41,18 +77,57 @@ class _GamePage extends State<GamePage> {
     }
   }
 
+  void computeWordPerMinute() {
+    setState(() {
+      WPM = rightWords * 2;
+    });
+  }
+
+  void updateTimer() {
+    isPlaying = true;
+    const oneSec = const Duration(seconds: 1);
+    timer = new Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (timerStart == 0) {
+          setState(() {
+            inputIsClickable = false;
+            timer.cancel();
+          });
+        } else {
+          setState(() {
+            timerStart--;
+          });
+        }
+      },
+    );
+  }
+
   void onChangedText(String text) {
+    if (isPlaying == false) {
+      updateTimer();
+    }
     if (text.substring(text.length - 1) == " ") {
-      print(text.substring(0, text.length - 1));
-      if (text.substring(0, text.length - 1) ==
-          englishWordsUsed[wordsWritten]) {
+      String wordWritten =
+          inputController.text.substring(0, inputController.text.length - 1);
+      String expectedWord = englishWordsUsed[wordsWritten];
+
+      print(
+          "Written : (" + wordWritten + ") Expected : (" + expectedWord + ")");
+
+      if (wordWritten == expectedWord) {
         print("Word is right");
+        rightWords++;
       } else {
         print("Word is false");
+        falseWords++;
       }
+      computeWordPerMinute();
+      displayController.text =
+          displayController.text.substring(expectedWord.length + 1);
       wordsWritten++;
       inputController.clear();
-    } else {}
+    }
   }
 
   @override
@@ -78,13 +153,38 @@ class _GamePage extends State<GamePage> {
             ),
             Container(
               child: Text(
-                "WPM : <100>",
-                style: TextStyle(fontSize: 25, color: Colors.white),
-                strutStyle: StrutStyle(fontSize: 40),
+                "$timerStart",
+                style: TextStyle(
+                    fontSize: 30,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800),
               ),
-              alignment: Alignment.centerRight,
+              alignment: Alignment.center,
               width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.only(right: 70, top: 40),
+            ),
+            Row(
+              children: [
+                Container(
+                  child: Text(
+                    "WPM : $WPM",
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                    strutStyle: StrutStyle(fontSize: 30),
+                  ),
+                  alignment: Alignment.centerLeft,
+                  margin: EdgeInsets.only(
+                    left: 15,
+                  ),
+                ),
+                Container(
+                  child: RaisedButton(
+                    color: Colors.black,
+                    onPressed: resetGame,
+                    child: Text('Reset game',
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                  ),
+                  margin: EdgeInsets.only(left: 155),
+                )
+              ],
             ),
             Container(
               child: TextFormField(
@@ -104,6 +204,7 @@ class _GamePage extends State<GamePage> {
             ),
             Container(
               child: TextField(
+                readOnly: !inputIsClickable,
                 controller: inputController,
                 onChanged: (String value) {
                   onChangedText(value);
