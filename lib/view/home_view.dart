@@ -52,14 +52,16 @@ class _HomePage extends State<HomePage> {
               margin: EdgeInsets.only(top: 45, left: 35, right: 35),
             ),
             Container(
-                child: ButtonTheme(
-                    height: 75,
-                    minWidth: 300,
-                    child: RaisedButton(
-                      onPressed: navigateToGamePage,
-                      child: Text('Play',
-                          style: TextStyle(fontSize: 20, color: Colors.white)),
-                    ))),
+              child: ButtonTheme(
+                  height: 75,
+                  minWidth: 300,
+                  child: RaisedButton(
+                    onPressed: navigateToGamePage,
+                    child: Text('Play',
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                  )),
+              margin: EdgeInsets.only(top: 75),
+            ),
             Container(
               child: ButtonTheme(
                   buttonColor: Colors.red,
@@ -70,7 +72,7 @@ class _HomePage extends State<HomePage> {
                     child: Text('Exit',
                         style: TextStyle(fontSize: 20, color: Colors.white)),
                   )),
-              margin: EdgeInsets.only(top: 30),
+              margin: EdgeInsets.only(top: 45),
             ),
           ],
         ),

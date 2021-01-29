@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'components/navigation-bar_component.dart';
 import 'package:rich_text_controller/rich_text_controller.dart';
+import "dart:math";
 import 'dart:async';
 
 const GAME_NAVBAR_INDEX = 1;
@@ -40,13 +41,19 @@ class _GamePage extends State<GamePage> {
     super.initState();
   }
 
+  getRandomElement<T>(List<T> list) {
+    final random = new Random();
+    var i = random.nextInt(list.length);
+    return list[i];
+  }
+
   void getEnglishWords() async {
     final String response =
         await rootBundle.loadString('assets/english_words.json');
     var data = await json.decode(response);
 
     for (var i = 0; i < data["commonWords"].length; i++) {
-      allEnglishWords.add(data["commonWords"][i]);
+      allEnglishWords.add(getRandomElement(data["commonWords"]));
     }
   }
 
